@@ -1,7 +1,22 @@
 {
   "name": "geoparquet",
   "version": "0.1.0",
+  "description": "A library for reading geospatial data in Apache Parquet format",
+  "author": "Hyperparam",
+  "homepage": "https://hyperparam.app",
+  "keywords": [
+    "geo",
+    "geojson",
+    "geoparquet",
+    "geospatial",
+    "gis",
+    "parquet"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyparam/geoparquet.git"
+  },
   "dependencies": {
     "hyparquet": "1.6.4"
   },
@@ -14,6 +29,10 @@
     "typescript": "5.7.2",
     "vitest": "2.1.8"
   },
+  "files": [
+    "src"
+  ],
+  "main": "src/index.js",
   "scripts": {
     "build": "rollup -c",
     "start": "http-server",
