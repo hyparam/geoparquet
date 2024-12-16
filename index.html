@@ -4,106 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GeoParquet & Google Maps Demo</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      height: 100%;
-      width: 100%;
-    }
-    .loading {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 10px;
-      font-family: sans-serif;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="map"></div>
   <div id="status" class="loading">Loading data...</div>
 
-  <!-- Load hyparquet from jsDelivr -->
-  <script type="module">
-    // Initialize map once Google Maps script has loaded (callback defined on script tag below)
-    let map
-
-    async function initMap() {
-      // Create map centered on a default location (e.g., roughly at continental US)
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 39.8283, lng: -98.5795 },
-        zoom: 4
-      })
-      
-      // Once map is loaded, we can fetch and plot data
-      await loadAndPlotGeoParquet()
-    }
-
-    async function loadAndPlotGeoParquet() {
-      const statusDiv = document.getElementById('status')
-      statusDiv.textContent = 'Loading parquet data...'
-
-      try {
-        const { asyncBufferFromUrl, parquetRead } = await import('https://cdn.jsdelivr.net/npm/hyparquet/src/hyparquet.min.js')
-
-        // Replace with your actual GeoParquet URL
-        const url = 'https://example.com/path/to/your-geoparquet-file.parquet'
-
-        // Adjust columns as needed - ensure geometry column is included
-        const columns = ['geometry', 'name'] // example columns: geometry + a name field
-
-        const dataBuffer = await asyncBufferFromUrl({ url })
-        const data = await parquetRead({
-          file: dataBuffer,
-          columns,
-        })
-
-        statusDiv.textContent = 'Processing data...'
-
-        // `data` should be an object with each column as a key and an array of values.
-        // For example: { geometry: [ { type: "Point", coordinates: [lng, lat]}, ...], name: ["Location A", ...] }
-        const geometries = data.geometry
-        const names = data.name || []
-
-        // Plot markers for each geometry
-        let bounds = new google.maps.LatLngBounds()
-        for (let i = 0; i < geometries.length; i++) {
-          const geom = geometries[i]
-          if (geom && geom.type === 'Point' && Array.isArray(geom.coordinates)) {
-            const [lng, lat] = geom.coordinates 
-            const position = { lat, lng }
-
-            new google.maps.Marker({
-              position,
-              map,
-              title: names[i] || 'No Name'
-            })
-
-            // Extend the map bounds so all points are visible
-            bounds.extend(position)
-          }
-        }
-
-        if (!bounds.isEmpty()) {
-          map.fitBounds(bounds)
-        }
-
-        statusDiv.textContent = 'Data loaded!'
-        // Hide the status div after a short delay
-        setTimeout(() => { statusDiv.style.display = 'none' }, 2000)
-
-      } catch (error) {
-        console.error('Error loading or plotting data:', error)
-        document.getElementById('status').textContent = 'Error loading data. Check console for details.'
-      }
-    }
+  <!-- Load the Google Maps JavaScript API -->
+  <script async
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
   </script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+  <!-- Load main.js -->
+  <script type="module" src="main.js"></script>
 </body>
 </html>
