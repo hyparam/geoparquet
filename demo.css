@@ -9,12 +9,3 @@ html, body {
   height: 100%;
   width: 100%;
 }
-
-.loading {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 10px;
-  font-family: sans-serif;
-}

@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hyparquet - GeoParquet Maps Demo</title>
+  <title>GeoParquet + Google Maps Demo</title>
   <link rel="stylesheet" href="demo.css" />
+
+  <!-- Load Google Maps JavaScript API -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQSLAwuvTBUrsDpwe17SFdIHo4PJXE1-Q&callback=initMap"></script>
+  <!-- Load demo js -->
+  <script type="module" src="demo.js"></script>
 </head>
 <body>
   <div id="map"></div>
-  <div id="status" class="loading">Loading data...</div>
-
-  <!-- Load the Google Maps JavaScript API -->
-  <script async
-    defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQSLAwuvTBUrsDpwe17SFdIHo4PJXE1-Q&callback=initMap">
-  </script>
-  <script type="module" src="demo.js"></script>
 </body>
 </html>
