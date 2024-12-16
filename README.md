@@ -4,6 +4,8 @@
 
 Convert geoparquet to geojson.
 
+Uses [hyparquet](https://github.com/hyparam/hyparquet) for tiny and fast parsing of parquet files in js.
+
 ## References
 
  - GeoJSON: https://datatracker.ietf.org/doc/html/rfc7946

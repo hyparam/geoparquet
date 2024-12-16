@@ -3,20 +3,25 @@
   "features": [
     {
       "type": "Feature",
-      "geometry": {"type": "Point", "coordinates": [102.0, 0.5]},
-      "properties": {"prop0": "value0"}
+      "geometry": {
+        "type": "Point",
+        "coordinates": [102, 0.5]
+      },
+      "properties": {
+        "prop0": "value0"
+      }
     },
     {
       "type": "Feature",
       "geometry": {
         "type": "LineString",
         "coordinates": [
-          [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
+          [102, 0], [103, 1], [104.0, 0], [105, 1]
         ]
       },
       "properties": {
         "prop0": "value0",
-        "prop1": 0.0
+        "prop1": 0
       }
     },
     {
@@ -25,13 +30,15 @@
          "type": "Polygon",
          "coordinates": [
           [
-            [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]
+            [100, 0], [101, 0], [101, 1], [100, 1], [100, 0]
           ]
         ]
       },
       "properties": {
         "prop0": "value0",
-        "prop1": {"this": "that"}
+        "prop1": {
+          "this": "that"
+        }
       }
     }
   ]

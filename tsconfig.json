@@ -7,5 +7,6 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "strict": true,
-  }
+  },
+  "include": ["src", "demo"],
 }

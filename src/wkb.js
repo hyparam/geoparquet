@@ -50,7 +50,7 @@ export function decodeWKB(wkb) {
     // Point
     const x = readDouble(wkb, offset); offset += 8
     const y = readDouble(wkb, offset); offset += 8
-    return { type: 'Point', coordinates: [x,y] }
+    return { type: 'Point', coordinates: [x, y] }
   } else if (geometryType === geometryTypeLineString) {
     // LineString
     const numPoints = readUInt32(wkb, offset); offset += 4
