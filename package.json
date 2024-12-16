@@ -1,15 +1,19 @@
 {
   "name": "geoparquet",
+  "version": "0.1.0",
+  "license": "MIT",
   "dependencies": {
     "hyparquet": "1.6.4"
   },
   "devDependencies": {
     "@types/google.maps": "3.58.1",
     "http-server": "14.1.1",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "vitest": "2.1.8"
   },
   "scripts": {
-    "start": "http-server"
+    "start": "http-server",
+    "test": "vitest run"
   },
   "type": "module"
 }
