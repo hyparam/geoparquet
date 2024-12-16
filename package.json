@@ -6,12 +6,16 @@
     "hyparquet": "1.6.4"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "16.0.0",
+    "@rollup/plugin-terser": "0.4.4",
     "@types/google.maps": "3.58.1",
     "http-server": "14.1.1",
+    "rollup": "4.28.1",
     "typescript": "5.7.2",
     "vitest": "2.1.8"
   },
   "scripts": {
+    "build": "rollup -c",
     "start": "http-server",
     "test": "vitest run"
   },
