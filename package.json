@@ -1,9 +1,13 @@
 {
   "name": "geoparquet",
   "dependencies": {
-    "http-server": "14.1.1"
+    "hyparquet": "1.6.4"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   },
   "scripts": {
     "start": "http-server"
-  }
+  },
+  "type": "module"
 }
