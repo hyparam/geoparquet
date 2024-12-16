@@ -1,4 +1,11 @@
 
+const geometryTypePoint = 1
+const geometryTypeLineString = 2
+const geometryTypePolygon = 3
+const geometryTypeMultiPoint = 4
+const geometryTypeMultiLineString = 5
+const geometryTypeMultiPolygon = 6
+
 /**
  * Minimal WKB (Well Known Binary) decoder supporting Polygon and MultiPolygon.
  * Supports both big-endian (byteOrder=0) and little-endian (byteOrder=1).
@@ -39,9 +46,22 @@ export function decodeWKB(wkb) {
   offset += 4
 
   // WKB geometry types (OGC):
-  // 1=Point, 2=LineString, 3=Polygon, 4=MultiPoint, 5=MultiLineString, 6=MultiPolygon
-  // We handle Polygon(3) and MultiPolygon(6)
-  if (geometryType === 3) {
+  if (geometryType === geometryTypePoint) {
+    // Point
+    const x = readDouble(wkb, offset); offset += 8
+    const y = readDouble(wkb, offset); offset += 8
+    return { type: 'Point', coordinates: [x,y] }
+  } else if (geometryType === geometryTypeLineString) {
+    // LineString
+    const numPoints = readUInt32(wkb, offset); offset += 4
+    const coords = []
+    for (let i = 0; i < numPoints; i++) {
+      const x = readDouble(wkb, offset); offset += 8
+      const y = readDouble(wkb, offset); offset += 8
+      coords.push([x,y])
+    }
+    return { type: 'LineString', coordinates: coords }
+  } else if (geometryType === geometryTypePolygon) {
     // Polygon
     const numRings = readUInt32(wkb, offset); offset += 4
     const coords = []
@@ -57,7 +77,7 @@ export function decodeWKB(wkb) {
     }
     return { type: 'Polygon', coordinates: coords }
 
-  } else if (geometryType === 6) {
+  } else if (geometryType === geometryTypeMultiPolygon) {
     // MultiPolygon
     const numPolygons = readUInt32(wkb, offset); offset += 4
     const polygons = []
@@ -102,6 +122,6 @@ export function decodeWKB(wkb) {
     }
     return { type: 'MultiPolygon', coordinates: polygons }
   } else {
-    throw new Error("Unsupported geometry type in this example: " + geometryType)
+    throw new Error("Unsupported geometry type: " + geometryType)
   }
 }

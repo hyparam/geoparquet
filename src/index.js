@@ -1,4 +1,5 @@
 import { parquetMetadataAsync, parquetQuery, toJson } from 'hyparquet'
+import { decodeWKB } from './wkb.js'
 
 /**
  * @import { AsyncBuffer } from 'hyparquet'
