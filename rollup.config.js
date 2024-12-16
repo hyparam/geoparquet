@@ -2,9 +2,9 @@ import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 
 export default {
-  input: 'src/index.js',
+  input: 'demo/demo.js',
   output: {
-    file: 'dist/geoparquet.min.js',
+    file: 'demo/bundle.min.js',
     name: 'geoparquet',
     sourcemap: true,
   },
@@ -12,5 +12,4 @@ export default {
     resolve(),
     terser(),
   ],
-  external: ['react', 'react-dom'],
 }
