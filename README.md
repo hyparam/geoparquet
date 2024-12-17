@@ -40,3 +40,4 @@ Check out the [live demo](https://hyparam.github.io/geoparquet/) to see GeoParqu
  - https://geojson.org/
  - https://datatracker.ietf.org/doc/html/rfc7946
  - https://github.com/hyparam/hyparquet
+ - https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry

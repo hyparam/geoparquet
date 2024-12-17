@@ -5,6 +5,24 @@ const geometryTypePolygon = 3
 const geometryTypeMultiPoint = 4
 const geometryTypeMultiLineString = 5
 const geometryTypeMultiPolygon = 6
+const geometryTypeGeometryCollection = 7
+const geometryTypeCircularString = 8
+const geometryTypeCompoundCurve = 9
+const geometryTypeCurvePolygon = 10
+const geometryTypeMultiCurve = 11
+const geometryTypeMultiSurface = 12
+const geometryTypeCurve = 13
+const geometryTypeSurface = 14
+const geometryTypePolyhedralSurface = 15
+const geometryTypeTIN = 16
+const geometryTypeTriangle = 17
+const geometryTypeCircle = 18
+const geometryTypeGeodesicString = 19
+const geometryTypeEllipticalCurve = 20
+const geometryTypeNurbsCurve = 21
+const geometryTypeClothoid = 22
+const geometryTypeSpiralCurve = 23
+const geometryTypeCompoundSurface = 24
 
 /**
  * WKB (Well Known Binary) decoder for geometry objects.
@@ -121,6 +139,25 @@ export function decodeWKB(wkb) {
       polygons.push(pgCoords)
     }
     return { type: 'MultiPolygon', coordinates: polygons }
+  } else if (geometryType === geometryTypeMultiPoint) {
+    // MultiPoint
+    throw new Error('Unsupported geometry type: MultiPoint')
+  } else if (geometryType === geometryTypeMultiLineString) {
+    // MultiLineString
+    const numLineStrings = readUInt32(wkb, offset); offset += 4
+    const lineStrings = []
+    for (let i = 0; i < numLineStrings; i++) {
+      offset += 5 // byte order and dimension?
+      const numPoints = readUInt32(wkb, offset); offset += 4
+      const coords = []
+      for (let p = 0; p < numPoints; p++) {
+        const x = readDouble(wkb, offset); offset += 8
+        const y = readDouble(wkb, offset); offset += 8
+        coords.push([x, y])
+      }
+      lineStrings.push(coords)
+    }
+    return { type: 'MultiLineString', coordinates: lineStrings }
   } else {
     throw new Error(`Unsupported geometry type: ${geometryType}`)
   }
