@@ -13,7 +13,7 @@ window.initMap = async function loadGeoParquet() {
   })
 
   // URL or path to your GeoParquet file
-  const parquetUrl = 'examples/example.parquet'
+  const parquetUrl = 'examples/polys.parquet'
 
   try {
     // Read the GeoParquet file and convert to GeoJSON

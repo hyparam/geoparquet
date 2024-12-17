@@ -7,8 +7,8 @@ const geometryTypeMultiLineString = 5
 const geometryTypeMultiPolygon = 6
 
 /**
- * Minimal WKB (Well Known Binary) decoder supporting Polygon and MultiPolygon.
- * Supports both big-endian (byteOrder=0) and little-endian (byteOrder=1).
+ * WKB (Well Known Binary) decoder for geometry objects.
+ *
  * @import { Geometry } from './geojson.js'
  * @param {Uint8Array} wkb 
  * @returns {Geometry} GeoJSON geometry object
