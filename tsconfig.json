@@ -6,7 +6,8 @@
     "module": "nodenext",
     "noEmit": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strict": true,
   },
-  "include": ["src", "demo"],
+  "include": ["src", "demo", "test"],
 }
