@@ -6,14 +6,14 @@ import polys from '../examples/polys.json' with { type: 'json' }
 
 describe('toGeoJson', () => {
   it('should parse example.parquet', async () => {
-    const asyncBuffer = await asyncBufferFromFile('examples/example.parquet')
-    const geojson = await toGeoJson(asyncBuffer)
+    const file = await asyncBufferFromFile('examples/example.parquet')
+    const geojson = await toGeoJson({ file })
     expect(geojson).toEqual(example)
   })
 
   it('should parse polys.parquet', async () => {
-    const asyncBuffer = await asyncBufferFromFile('examples/polys.parquet')
-    const geojson = await toGeoJson(asyncBuffer)
+    const file = await asyncBufferFromFile('examples/polys.parquet')
+    const geojson = await toGeoJson({ file })
     expect(geojson).toEqual(polys)
   })
 })

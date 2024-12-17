@@ -17,8 +17,8 @@ window.initMap = async function loadGeoParquet() {
 
   try {
     // Read the GeoParquet file and convert to GeoJSON
-    const asyncBuffer = await asyncBufferFromUrl({ url: parquetUrl })
-    const geojson = await toGeoJson(asyncBuffer)
+    const file = await asyncBufferFromUrl({ url: parquetUrl })
+    const geojson = await toGeoJson({ file })
 
     console.log('GeoJSON:', geojson)
 

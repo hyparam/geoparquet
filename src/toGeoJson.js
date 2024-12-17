@@ -8,11 +8,12 @@ import { decodeWKB } from './wkb.js'
  *
  * @import { AsyncBuffer } from 'hyparquet'
  * @import { Feature, GeoJSON } from './geojson.js'
- * @param {AsyncBuffer} asyncBuffer 
+ * @param {Object} options
+ * @param {AsyncBuffer} options.file 
  * @returns {Promise<GeoJSON>}
  */
-export async function toGeoJson(asyncBuffer) {
-  const metadata = await parquetMetadataAsync(asyncBuffer)
+export async function toGeoJson({ file }) {
+  const metadata = await parquetMetadataAsync(file)
   const geoMetadata = metadata.key_value_metadata?.find(kv => kv.key === 'geo')
   if (!geoMetadata) {
     throw new Error('Invalid GeoParquet file: missing "geo" metadata')
@@ -22,7 +23,7 @@ export async function toGeoJson(asyncBuffer) {
   const geoSchema = JSON.parse(geoMetadata.value || '{}')
 
   // Read all parquet data
-  const data = await parquetQuery({ file: asyncBuffer, utf8: false })
+  const data = await parquetQuery({ file, utf8: false })
 
   /** @type {Feature[]} */
   const features = []
