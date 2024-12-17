@@ -32,106 +32,68 @@ const geometryTypeCompoundSurface = 24
  * @returns {Geometry} GeoJSON geometry object
  */
 export function decodeWKB(wkb) {
+  const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
   let offset = 0
 
   // Byte order: 0 = big-endian, 1 = little-endian
   const byteOrder = wkb[offset]; offset += 1
   const isLittleEndian = byteOrder === 1
 
-  // Helper functions
-  /**
-   * Read a 32-bit unsigned integer from buffer at given offset
-   * @param {Uint8Array} buf
-   * @param {number} off
-   */
-  function readUInt32(buf, off) {
-    const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength)
-    return dv.getUint32(off, isLittleEndian)
-  }
-
-  /**
-   * Read a 64-bit double from buffer at given offset
-   * @param {Uint8Array} buf
-   * @param {number} off
-   */
-  function readDouble(buf, off) {
-    const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength)
-    return dv.getFloat64(off, isLittleEndian)
-  }
-
   // Read geometry type
-  const geometryType = readUInt32(wkb, offset)
+  const geometryType = dv.getUint32(offset, isLittleEndian)
   offset += 4
 
   // WKB geometry types (OGC):
   if (geometryType === geometryTypePoint) {
     // Point
-    const x = readDouble(wkb, offset); offset += 8
-    const y = readDouble(wkb, offset); offset += 8
+    const x = dv.getFloat64(offset, isLittleEndian); offset += 8
+    const y = dv.getFloat64(offset, isLittleEndian); offset += 8
     return { type: 'Point', coordinates: [x, y] }
   } else if (geometryType === geometryTypeLineString) {
     // LineString
-    const numPoints = readUInt32(wkb, offset); offset += 4
+    const numPoints = dv.getUint32(offset, isLittleEndian); offset += 4
     const coords = []
     for (let i = 0; i < numPoints; i++) {
-      const x = readDouble(wkb, offset); offset += 8
-      const y = readDouble(wkb, offset); offset += 8
+      const x = dv.getFloat64(offset, isLittleEndian); offset += 8
+      const y = dv.getFloat64(offset, isLittleEndian); offset += 8
       coords.push([x, y])
     }
     return { type: 'LineString', coordinates: coords }
   } else if (geometryType === geometryTypePolygon) {
     // Polygon
-    const numRings = readUInt32(wkb, offset); offset += 4
+    const numRings = dv.getUint32(offset, isLittleEndian); offset += 4
     const coords = []
     for (let r = 0; r < numRings; r++) {
-      const numPoints = readUInt32(wkb, offset); offset += 4
+      const numPoints = dv.getUint32(offset, isLittleEndian); offset += 4
       const ring = []
       for (let p = 0; p < numPoints; p++) {
-        const x = readDouble(wkb, offset); offset += 8
-        const y = readDouble(wkb, offset); offset += 8
+        const x = dv.getFloat64(offset, isLittleEndian); offset += 8
+        const y = dv.getFloat64(offset, isLittleEndian); offset += 8
         ring.push([x, y])
       }
       coords.push(ring)
     }
     return { type: 'Polygon', coordinates: coords }
-
   } else if (geometryType === geometryTypeMultiPolygon) {
     // MultiPolygon
-    const numPolygons = readUInt32(wkb, offset); offset += 4
+    const numPolygons = dv.getUint32(offset, isLittleEndian); offset += 4
     const polygons = []
     for (let i = 0; i < numPolygons; i++) {
       // Each polygon has its own byte order & geometry type
-      const pgByteOrder = wkb[offset]; offset += 1
-      const pgIsLittleEndian = pgByteOrder === 1
-      const pgType = (function() {
-        const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
-        const val = dv.getUint32(offset, pgIsLittleEndian)
-        offset += 4
-        return val
-      })()
-
-      if (pgType !== 3) throw new Error(`Expected Polygon in MultiPolygon, got ${pgType}`)
-
-      const numRings = (function() {
-        const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
-        const val = dv.getUint32(offset, pgIsLittleEndian)
-        offset += 4
-        return val
-      })()
+      const polyIsLittleEndian = wkb[offset] === 1; offset += 1
+      const polyType = dv.getUint32(offset, polyIsLittleEndian); offset += 4
+      if (polyType !== geometryTypePolygon) {
+        throw new Error(`Expected Polygon in MultiPolygon, got ${polyType}`)
+      }
+      const numRings = dv.getUint32(offset, polyIsLittleEndian); offset += 4
 
       const pgCoords = []
       for (let r = 0; r < numRings; r++) {
-        const numPoints = (function() {
-          const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
-          const val = dv.getUint32(offset, pgIsLittleEndian)
-          offset += 4
-          return val
-        })()
+        const numPoints = dv.getUint32(offset, polyIsLittleEndian); offset += 4
         const ring = []
         for (let p = 0; p < numPoints; p++) {
-          const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
-          const x = dv.getFloat64(offset, pgIsLittleEndian); offset += 8
-          const y = dv.getFloat64(offset, pgIsLittleEndian); offset += 8
+          const x = dv.getFloat64(offset, polyIsLittleEndian); offset += 8
+          const y = dv.getFloat64(offset, polyIsLittleEndian); offset += 8
           ring.push([x, y])
         }
         pgCoords.push(ring)
@@ -144,15 +106,20 @@ export function decodeWKB(wkb) {
     throw new Error('Unsupported geometry type: MultiPoint')
   } else if (geometryType === geometryTypeMultiLineString) {
     // MultiLineString
-    const numLineStrings = readUInt32(wkb, offset); offset += 4
+    const numLineStrings = dv.getUint32(offset, isLittleEndian); offset += 4
     const lineStrings = []
     for (let i = 0; i < numLineStrings; i++) {
-      offset += 5 // byte order and dimension?
-      const numPoints = readUInt32(wkb, offset); offset += 4
+      // Each line has its own byte order & geometry type
+      const lineIsLittleEndian = wkb[offset] === 1; offset += 1
+      const lineType = dv.getUint32(offset, lineIsLittleEndian); offset += 4
+      if (lineType !== geometryTypeLineString) {
+        throw new Error(`Expected LineString in MultiLineString, got ${lineType}`)
+      }
+      const numPoints = dv.getUint32(offset, isLittleEndian); offset += 4
       const coords = []
       for (let p = 0; p < numPoints; p++) {
-        const x = readDouble(wkb, offset); offset += 8
-        const y = readDouble(wkb, offset); offset += 8
+        const x = dv.getFloat64(offset, lineIsLittleEndian); offset += 8
+        const y = dv.getFloat64(offset, lineIsLittleEndian); offset += 8
         coords.push([x, y])
       }
       lineStrings.push(coords)
