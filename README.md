@@ -26,7 +26,7 @@ Convert a GeoParquet file to GeoJSON:
 ```javascript
 const { asyncBufferFromUrl, toGeoJson } = import('geoparquet')
 
-const file = asyncBufferFromUrl('example.parquet')
+const file = asyncBufferFromUrl({ url: 'example.parquet' })
 const geoJson = toGeoJson({ file })
 ```
 
