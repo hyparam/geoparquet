@@ -11,7 +11,7 @@ window.initMap = async function loadGeoParquet() {
   })
 
   // URL or path to your GeoParquet file
-  const parquetUrl = 'examples/polys.parquet'
+  const parquetUrl = 'demo/polys.parquet'
 
   try {
     // Read the GeoParquet file and convert to GeoJSON

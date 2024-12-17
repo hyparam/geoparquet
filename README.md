@@ -6,7 +6,7 @@
 [![minzipped](https://img.shields.io/bundlephobia/minzip/geoparquet)](https://www.npmjs.com/package/geoparquet)
 [![workflow status](https://github.com/hyparam/geoparquet/actions/workflows/ci.yml/badge.svg)](https://github.com/hyparam/geoparquet/actions)
 [![mit license](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
-![coverage](https://img.shields.io/badge/Coverage-95-darkred)
+![coverage](https://img.shields.io/badge/Coverage-97-darkred)
 
 **GeoParquet** provides a pure JavaScript workflow to read and convert [GeoParquet](https://github.com/opengeospatial/geoparquet) files into [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946). Under the hood, it uses the [hyparquet](https://github.com/hyparam/hyparquet) library for efficient in-browser parquet parsing, enabling minimal overhead and fast loading.
 

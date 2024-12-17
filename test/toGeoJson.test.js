@@ -1,19 +1,29 @@
+import fs from 'fs'
 import { asyncBufferFromFile } from 'hyparquet'
 import { describe, expect, it } from 'vitest'
 import { toGeoJson } from '../src/index.js'
-import example from '../examples/example.json' with { type: 'json' }
-import polys from '../examples/polys.json' with { type: 'json' }
+import example from './files/example.json' with { type: 'json' }
+import polys from './files/polys.json' with { type: 'json' }
 
-describe('toGeoJson', () => {
-  it('should parse example.parquet', async () => {
-    const file = await asyncBufferFromFile('examples/example.parquet')
-    const geojson = await toGeoJson({ file })
-    expect(geojson).toEqual(example)
-  })
+describe('toGeoJson parse test files', () => {
+  const files = fs.readdirSync('test/files').filter(f => f.endsWith('.parquet'))
 
-  it('should parse polys.parquet', async () => {
-    const file = await asyncBufferFromFile('examples/polys.parquet')
-    const geojson = await toGeoJson({ file })
-    expect(geojson).toEqual(polys)
+  files.forEach(filename => {
+    it(`parse data from ${filename}`, async () => {
+      const base = filename.replace('.parquet', '')
+      const file = await asyncBufferFromFile(`test/files/${filename}`)
+      const geojson = await toGeoJson({ file })
+      const expected = fileToJson(`test/files/${base}.json`)
+      expect(geojson).toEqual(expected)
+    })
   })
 })
+
+/**
+ * @param {string} filePath
+ * @returns {any}
+ */
+function fileToJson(filePath) {
+  const buffer = fs.readFileSync(filePath)
+  return JSON.parse(buffer.toString())
+}
