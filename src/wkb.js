@@ -10,7 +10,7 @@ const geometryTypeMultiPolygon = 6
  * WKB (Well Known Binary) decoder for geometry objects.
  *
  * @import { Geometry } from './geojson.js'
- * @param {Uint8Array} wkb 
+ * @param {Uint8Array} wkb
  * @returns {Geometry} GeoJSON geometry object
  */
 export function decodeWKB(wkb) {
@@ -18,7 +18,7 @@ export function decodeWKB(wkb) {
 
   // Byte order: 0 = big-endian, 1 = little-endian
   const byteOrder = wkb[offset]; offset += 1
-  const isLittleEndian = (byteOrder === 1)
+  const isLittleEndian = byteOrder === 1
 
   // Helper functions
   /**
@@ -58,7 +58,7 @@ export function decodeWKB(wkb) {
     for (let i = 0; i < numPoints; i++) {
       const x = readDouble(wkb, offset); offset += 8
       const y = readDouble(wkb, offset); offset += 8
-      coords.push([x,y])
+      coords.push([x, y])
     }
     return { type: 'LineString', coordinates: coords }
   } else if (geometryType === geometryTypePolygon) {
@@ -71,7 +71,7 @@ export function decodeWKB(wkb) {
       for (let p = 0; p < numPoints; p++) {
         const x = readDouble(wkb, offset); offset += 8
         const y = readDouble(wkb, offset); offset += 8
-        ring.push([x,y])
+        ring.push([x, y])
       }
       coords.push(ring)
     }
@@ -84,7 +84,7 @@ export function decodeWKB(wkb) {
     for (let i = 0; i < numPolygons; i++) {
       // Each polygon has its own byte order & geometry type
       const pgByteOrder = wkb[offset]; offset += 1
-      const pgIsLittleEndian = (pgByteOrder === 1)
+      const pgIsLittleEndian = pgByteOrder === 1
       const pgType = (function() {
         const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
         const val = dv.getUint32(offset, pgIsLittleEndian)
@@ -114,7 +114,7 @@ export function decodeWKB(wkb) {
           const dv = new DataView(wkb.buffer, wkb.byteOffset, wkb.byteLength)
           const x = dv.getFloat64(offset, pgIsLittleEndian); offset += 8
           const y = dv.getFloat64(offset, pgIsLittleEndian); offset += 8
-          ring.push([x,y])
+          ring.push([x, y])
         }
         pgCoords.push(ring)
       }
@@ -122,6 +122,6 @@ export function decodeWKB(wkb) {
     }
     return { type: 'MultiPolygon', coordinates: polygons }
   } else {
-    throw new Error("Unsupported geometry type: " + geometryType)
+    throw new Error(`Unsupported geometry type: ${geometryType}`)
   }
 }

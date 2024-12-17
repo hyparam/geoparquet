@@ -9,7 +9,7 @@ import { decodeWKB } from './wkb.js'
  * @import { AsyncBuffer } from 'hyparquet'
  * @import { Feature, GeoJSON } from './geojson.js'
  * @param {Object} options
- * @param {AsyncBuffer} options.file 
+ * @param {AsyncBuffer} options.file
  * @returns {Promise<GeoJSON>}
  */
 export async function toGeoJson({ file }) {
@@ -57,7 +57,7 @@ export async function toGeoJson({ file }) {
     const feature = {
       type: 'Feature',
       geometry,
-      properties
+      properties,
     }
 
     features.push(feature)

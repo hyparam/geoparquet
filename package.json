@@ -25,6 +25,7 @@
     "@rollup/plugin-terser": "0.4.4",
     "@types/google.maps": "3.58.1",
     "@vitest/coverage-v8": "2.1.8",
+    "eslint": "9.17.0",
     "http-server": "14.1.1",
     "rollup": "4.28.1",
     "typescript": "5.7.2",
@@ -37,6 +38,7 @@
   "scripts": {
     "build": "rollup -c",
     "coverage": "vitest run --coverage --coverage.include=src",
+    "lint": "eslint",
     "start": "http-server",
     "test": "vitest run"
   },
