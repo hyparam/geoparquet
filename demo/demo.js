@@ -8,8 +8,8 @@ window.initMap = async function loadGeoParquet() {
   const div = /** @type {HTMLElement} */(document.getElementById('map'))
   // Create a new map
   map = new google.maps.Map(div, {
-    center: { lat: 0, lng: 102 },
-    zoom: 7,
+    center: { lat: 39, lng: -98 },
+    zoom: 4,
   })
 
   // URL or path to your GeoParquet file
