@@ -103,7 +103,20 @@ export function decodeWKB(wkb) {
     return { type: 'MultiPolygon', coordinates: polygons }
   } else if (geometryType === geometryTypeMultiPoint) {
     // MultiPoint
-    throw new Error('Unsupported geometry type: MultiPoint')
+    const numPoints = dv.getUint32(offset, isLittleEndian); offset += 4
+    const points = []
+    for (let i = 0; i < numPoints; i++) {
+      // Each point has its own byte order & geometry type
+      const pointIsLittleEndian = wkb[offset] === 1; offset += 1
+      const pointType = dv.getUint32(offset, pointIsLittleEndian); offset += 4
+      if (pointType !== geometryTypePoint) {
+        throw new Error(`Expected Point in MultiPoint, got ${pointType}`)
+      }
+      const x = dv.getFloat64(offset, pointIsLittleEndian); offset += 8
+      const y = dv.getFloat64(offset, pointIsLittleEndian); offset += 8
+      points.push([x, y])
+    }
+    return { type: 'MultiPoint', coordinates: points }
   } else if (geometryType === geometryTypeMultiLineString) {
     // MultiLineString
     const numLineStrings = dv.getUint32(offset, isLittleEndian); offset += 4
