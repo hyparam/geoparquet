@@ -6,13 +6,14 @@ import { decodeWKB } from './wkb.js'
  * Input is an AsyncBuffer representing a GeoParquet file.
  * An AsyncBuffer is a buffer-like object that can be read asynchronously.
  *
- * @import { AsyncBuffer } from 'hyparquet'
+ * @import { AsyncBuffer, Compressors } from 'hyparquet'
  * @import { Feature, GeoJSON } from './geojson.js'
  * @param {Object} options
  * @param {AsyncBuffer} options.file
+ * @param {Compressors} [options.compressors]
  * @returns {Promise<GeoJSON>}
  */
-export async function toGeoJson({ file }) {
+export async function toGeoJson({ file, compressors }) {
   const metadata = await parquetMetadataAsync(file)
   const geoMetadata = metadata.key_value_metadata?.find(kv => kv.key === 'geo')
   if (!geoMetadata) {
@@ -23,7 +24,7 @@ export async function toGeoJson({ file }) {
   const geoSchema = JSON.parse(geoMetadata.value || '{}')
 
   // Read all parquet data
-  const data = await parquetQuery({ file, utf8: false })
+  const data = await parquetQuery({ file, utf8: false, compressors })
 
   /** @type {Feature[]} */
   const features = []
