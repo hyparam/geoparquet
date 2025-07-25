@@ -18,7 +18,7 @@
     "url": "git+https://github.com/hyparam/geoparquet.git"
   },
   "dependencies": {
-    "hyparquet": "1.7.0"
+    "hyparquet": "1.17.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "16.0.0",

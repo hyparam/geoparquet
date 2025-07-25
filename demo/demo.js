@@ -12,11 +12,12 @@ async function initMap() {
   })
 
   // URL or path to your GeoParquet file
-  const parquetUrl = 'demo/polys.parquet'
+  const parquetUrl = 'https://hyparam.github.io/geoparquet/demo/polys.parquet'
 
   try {
     // Read the GeoParquet file and convert to GeoJSON
-    const file = await asyncBufferFromUrl({ url: parquetUrl })
+    const file = await asyncBufferFromUrl({ url: parquetUrl, byteLength: 29838 })
+    console.log('GeoParquet file:', file)
     const geojson = await toGeoJson({ file })
 
     console.log('GeoJSON:', geojson)
