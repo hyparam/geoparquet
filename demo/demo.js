@@ -4,7 +4,7 @@ import { toGeoJson } from '../src/index.js'
 async function initMap() {
   // @ts-expect-error MapsLibrary
   const { Map } = await google.maps.importLibrary('maps')
-  const div = /** @type {HTMLElement} */(document.getElementById('map'))
+  const div = /** @type {HTMLElement} */document.getElementById('map')
   // Create a new map
   const map = new Map(div, {
     center: { lat: 39, lng: -98 },
