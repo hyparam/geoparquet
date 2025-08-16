@@ -42,14 +42,8 @@ export async function toGeoJson({ file, compressors }) {
     /** @type {Record<string, any>} */
     const properties = {}
     for (const key of Object.keys(row)) {
-      let value = row[key]
+      const value = row[key]
       if (key !== primaryColumn && value !== null) {
-        try {
-          // Try to parse JSON
-          value = JSON.parse(value)
-        } catch (error) {
-          // Ignore
-        }
         properties[key] = value
       }
     }

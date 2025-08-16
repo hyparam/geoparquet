@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { asyncBufferFromFile } from 'hyparquet'
+import { asyncBufferFromFile, toJson } from 'hyparquet'
 import { compressors } from 'hyparquet-compressors'
 import { describe, expect, it } from 'vitest'
 import { toGeoJson } from '../src/index.js'
@@ -13,7 +13,7 @@ describe('toGeoJson parse test files', () => {
       const file = await asyncBufferFromFile(`test/files/${filename}`)
       const geojson = await toGeoJson({ file })
       const expected = fileToJson(`test/files/${base}.json`)
-      expect(geojson).toEqual(expected)
+      expect(toJson(geojson)).toEqual(expected)
     })
   })
 
@@ -23,8 +23,8 @@ describe('toGeoJson parse test files', () => {
     it(`parse data from compressed ${filename}`, async () => {
       const file = await asyncBufferFromFile(`test/files/compressed/${filename}`)
       const geojson = await toGeoJson({ file, compressors })
-      const expected = fileToJson('test/files/example.json')
-      expect(geojson).toEqual(expected)
+      const expected = fileToJson('test/files/compressed-example.json')
+      expect(toJson(geojson)).toEqual(expected)
     })
   })
 })
