@@ -41,7 +41,7 @@
     "build": "rollup -c",
     "coverage": "vitest run --coverage --coverage.include=src",
     "lint": "eslint",
-    "start": "http-server",
+    "start": "http-server -a localhost",
     "test": "vitest run"
   },
   "type": "module"
