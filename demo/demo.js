@@ -1,4 +1,4 @@
-import { asyncBufferFromUrl } from 'hyparquet'
+import { asyncBufferFromUrl, cachedAsyncBuffer } from 'hyparquet'
 import { toGeoJson } from '../src/index.js'
 
 async function initMap() {
@@ -16,7 +16,9 @@ async function initMap() {
 
   try {
     // Read the GeoParquet file and convert to GeoJSON
-    const file = await asyncBufferFromUrl({ url: parquetUrl, byteLength: 29838 })
+    const file = cachedAsyncBuffer(
+      await asyncBufferFromUrl({ url: parquetUrl, byteLength: 29838 })
+    )
     console.log('GeoParquet file:', file)
     const geojson = await toGeoJson({ file })
 

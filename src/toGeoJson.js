@@ -1,4 +1,4 @@
-import { parquetMetadataAsync, parquetQuery } from 'hyparquet'
+import { parquetMetadataAsync, parquetReadObjects } from 'hyparquet'
 import { decodeWKB } from './wkb.js'
 
 /**
@@ -24,7 +24,7 @@ export async function toGeoJson({ file, compressors }) {
   const geoSchema = JSON.parse(geoMetadata.value || '{}')
 
   // Read all parquet data
-  const data = await parquetQuery({ file, utf8: false, compressors })
+  const data = await parquetReadObjects({ file, metadata, utf8: false, compressors })
 
   /** @type {Feature[]} */
   const features = []
