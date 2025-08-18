@@ -18,7 +18,7 @@
     "url": "git+https://github.com/hyparam/geoparquet.git"
   },
   "dependencies": {
-    "hyparquet": "1.17.2"
+    "hyparquet": "1.17.3"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "16.0.1",
@@ -34,15 +34,29 @@
     "vitest": "3.2.4"
   },
   "files": [
-    "src"
+    "src",
+    "types"
   ],
+  "type": "module",
+  "types": "types/index.d.ts",
   "main": "src/index.js",
+  "exports": {
+    "browser": {
+      "types": "./types/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "default": {
+      "types": "./types/node.d.ts",
+      "import": "./src/node.js"
+    }
+  },
   "scripts": {
     "build": "rollup -c",
+    "build:types": "tsc -p ./tsconfig.lib.json",
     "coverage": "vitest run --coverage --coverage.include=src",
     "lint": "eslint",
+    "prepare": "npm run build:types",
     "start": "http-server -a localhost",
     "test": "vitest run"
-  },
-  "type": "module"
+  }
 }
