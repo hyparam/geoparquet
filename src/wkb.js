@@ -27,7 +27,7 @@ const geometryTypeCompoundSurface = 24
 /**
  * WKB (Well Known Binary) decoder for geometry objects.
  *
- * @import { Geometry } from './geojson.js'
+ * @import { Geometry } from '../src/geojson.js'
  * @param {Uint8Array} wkb
  * @returns {Geometry} GeoJSON geometry object
  */

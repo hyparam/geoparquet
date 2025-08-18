@@ -7,7 +7,7 @@ import { decodeWKB } from './wkb.js'
  * An AsyncBuffer is a buffer-like object that can be read asynchronously.
  *
  * @import { AsyncBuffer, Compressors } from 'hyparquet'
- * @import { Feature, GeoJSON } from './geojson.js'
+ * @import { Feature, GeoJSON } from '../src/geojson.js'
  * @param {Object} options
  * @param {AsyncBuffer} options.file
  * @param {Compressors} [options.compressors]
