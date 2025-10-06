@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { decodeWKB } from '../src/wkb.js'
+import { decodeWKB } from '../src/index.js'
 
 describe('WKB decoding', () => {
   it('should decoding well-known binary Point', () => {

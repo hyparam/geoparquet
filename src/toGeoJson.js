@@ -1,5 +1,5 @@
 import { parquetMetadataAsync, parquetReadObjects } from 'hyparquet'
-import { decodeWKB } from './wkb.js'
+import { wkbToGeojson } from 'hyparquet/src/wkb.js'
 
 /**
  * Convert a GeoParquet file to GeoJSON.
@@ -62,4 +62,11 @@ export async function toGeoJson({ file, compressors }) {
     type: 'FeatureCollection',
     features,
   }
+}
+
+/**
+ * @param {Uint8Array} buffer
+ */
+export function decodeWKB(buffer) {
+  return wkbToGeojson({ view: new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength), offset: 0 })
 }

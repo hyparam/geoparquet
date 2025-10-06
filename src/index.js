@@ -1,3 +1,2 @@
 export { asyncBufferFromUrl } from 'hyparquet'
-export { toGeoJson } from './toGeoJson.js'
-export { decodeWKB } from './wkb.js'
+export { toGeoJson, decodeWKB } from './toGeoJson.js'
