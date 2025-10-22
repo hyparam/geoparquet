@@ -1,5 +1,4 @@
 import { parquetMetadataAsync, parquetReadObjects } from 'hyparquet'
-import { wkbToGeojson } from 'hyparquet/src/wkb.js'
 
 /**
  * Convert a GeoParquet file to GeoJSON.
@@ -30,13 +29,8 @@ export async function toGeoJson({ file, compressors }) {
   const features = []
   const primaryColumn = geoSchema.primary_column || 'geometry'
   for (const row of data) {
-    const wkb = row[primaryColumn]
-    if (!wkb) {
-      // No geometry
-      continue
-    }
-
-    const geometry = decodeWKB(wkb)
+    const geometry = row[primaryColumn]
+    if (!geometry) continue // No geometry
 
     // Extract properties (all fields except geometry)
     /** @type {Record<string, any>} */
@@ -62,11 +56,4 @@ export async function toGeoJson({ file, compressors }) {
     type: 'FeatureCollection',
     features,
   }
-}
-
-/**
- * @param {Uint8Array} buffer
- */
-export function decodeWKB(buffer) {
-  return wkbToGeojson({ view: new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength), offset: 0 })
 }
