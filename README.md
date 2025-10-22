@@ -1,5 +1,3 @@
-# GeoParquet
-
 ![GeoParquet parakeets gathered around a map](geoparquet.jpg)
 
 [![npm](https://img.shields.io/npm/v/geoparquet)](https://www.npmjs.com/package/geoparquet)
@@ -8,6 +6,29 @@
 [![mit license](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
 ![coverage](https://img.shields.io/badge/Coverage-95-darkred)
 [![dependencies](https://img.shields.io/badge/Dependencies-1-blueviolet)](https://www.npmjs.com/package/geoparquet?activeTab=dependencies)
+
+# GeoParquet is DEPRECATED
+
+This GeoParquet JS library has been deprecated in favor of native support for GeoParquet in [hyparquet](https://github.com/hyparam/hyparquet).
+
+We recommend using hyparquet directly for reading GeoParquet files:
+
+```javascript
+const { asyncBufferFromUrl, parquetReadObjects } = await import('hyparquet')
+
+const file = await asyncBufferFromUrl({ url: 'example.parquet' })
+const data = await parquetReadObjects({ file })
+const geojson = {
+  type: 'FeatureCollection',
+  features: data.map(({ geometry, ...properties }) => ({
+    type: 'Feature',
+    geometry,
+    properties,
+  }))
+}
+```
+
+# GeoParquet
 
 **GeoParquet** provides a pure JavaScript workflow to read and convert [GeoParquet](https://github.com/opengeospatial/geoparquet) files into [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946). Under the hood, it uses the [hyparquet](https://github.com/hyparam/hyparquet) library for efficient in-browser parquet parsing, enabling minimal overhead and fast loading.
 
@@ -18,17 +39,6 @@
 - **Smaller file sizes:** A GeoParquet file plus this lightweight library can often be much smaller than the equivalent GeoJSON, reducing bandwidth costs and improving load times.
 - **Faster loading:** Pure JavaScript parsing of Parquet files in the browser, with tiny package size means fast page load times.
 - **Seamless integration:** GeoParquet is based on well-established standards (GeoJSON, Parquet), ensuring broad compatibility and extensibility.
-
-## Usage
-
-Convert a GeoParquet file to GeoJSON:
-
-```javascript
-const { asyncBufferFromUrl, toGeoJson } = await import('geoparquet')
-
-const file = asyncBufferFromUrl({ url: 'example.parquet' })
-const geoJson = toGeoJson({ file })
-```
 
 ## Demo
 

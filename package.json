@@ -1,6 +1,6 @@
 {
   "name": "geoparquet",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A library for reading geospatial data in Apache Parquet format",
   "author": "Hyperparam",
   "homepage": "https://hyperparam.app",
